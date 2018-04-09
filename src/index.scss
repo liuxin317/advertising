@@ -1,0 +1,84 @@
+
+@import '~antd/dist/antd.css';
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Microsoft YaHei";
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+.pull-left,
+.list-inline li {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+.load-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0, .5);
+
+  &.active {
+    display: none;
+    animation: showHide 1s ease-in-out 1;
+    animation-fill-mode: forwards;
+
+    .move-img {
+      display: none;
+    }
+
+    @keyframes showHide {
+      0% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 0.2;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+
+  .move-img {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 60px;
+    transform: translate(-50%, -50%);
+    animation: moveImg 2s linear infinite;
+
+    @keyframes moveImg {
+      0% {
+        transform: rotate(0);
+      }
+      50% {
+        transform: rotate(180deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}

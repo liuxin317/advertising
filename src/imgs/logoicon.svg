@@ -1,0 +1,58 @@
+<svg id="logoicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="109" height="86" viewBox="0 0 109 86">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00acee;
+      }
+
+      .cls-1, .cls-2, .cls-4 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #383f52;
+        filter: url(#filter);
+      }
+
+      .cls-3 {
+        filter: url(#filter-2);
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+    </style>
+    <filter id="filter" x="490" y="113" width="57" height="55" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" dx="-2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="2.236"/>
+      <feFlood result="flood" flood-color="#0092cc"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feOffset result="offset-2" dx="2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur-2" stdDeviation="2.236"/>
+      <feFlood result="flood-2" flood-color="#0092cc"/>
+      <feComposite result="composite-2" operator="in" in2="blur-2"/>
+      <feBlend result="blend" mode="multiply" in2="composite"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+    <filter id="filter-2" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" dy="2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="2"/>
+      <feFlood result="flood" flood-color="#383f52"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feBlend result="blend" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="logo02">
+    <path id="矩形_31" data-name="矩形 31" class="cls-1" d="M522.769,165h-0.081a47.531,47.531,0,0,1-26.23-42.393c0-.014,0-0.027,0-0.041a29.859,29.859,0,0,0,4.2.3,29.474,29.474,0,0,0,22.068-9.873,29.471,29.471,0,0,0,22.068,9.873,29.859,29.859,0,0,0,4.2-.3c0,0.014,0,.027,0,0.041A47.53,47.53,0,0,1,522.769,165Zm-9.457,0h-0.081A47.53,47.53,0,0,1,487,122.607c0-.014,0-0.027,0-0.041a29.859,29.859,0,0,0,4.2.3,29.474,29.474,0,0,0,22.068-9.873,29.473,29.473,0,0,0,22.068,9.873,29.859,29.859,0,0,0,4.2-.3c0,0.014,0,.027,0,0.041A47.531,47.531,0,0,1,513.312,165Z" transform="translate(-464 -113)"/>
+    <path id="矩形_31_拷贝_5" data-name="矩形 31 拷贝 5" class="cls-2" d="M518,162.279a47.4,47.4,0,0,1-21.542-39.672c0-.014,0-0.027,0-0.041a29.859,29.859,0,0,0,4.2.3A29.458,29.458,0,0,0,518,117.259a29.456,29.456,0,0,0,17.339,5.608,29.859,29.859,0,0,0,4.2-.3c0,0.014,0,.027,0,0.041A47.4,47.4,0,0,1,518,162.279Z" transform="translate(-464 -113)"/>
+    <g id="p" class="cls-3">
+      <path id="椭圆_10_拷贝" data-name="椭圆 10 拷贝" class="cls-4" d="M511.7,148.876V131.189h3.573v14.149A3.556,3.556,0,0,1,511.7,148.876Zm11.613-5.306h-7.147a3.556,3.556,0,0,1,3.574-3.538h3.573a2.653,2.653,0,1,0,0-5.306h-8.04v-3.537h8.04A6.191,6.191,0,1,1,523.313,143.57Z" transform="translate(-464 -113)"/>
+    </g>
+  </g>
+  <g id="权限中心">
+    <path id="权" class="cls-4" d="M486,199h-3l-2.082-5.205L479,199h-4l3.836-10.411L475,179h3l2.274,5.685L482,180v-2h-7v-2h11v4l-3.644,9.89Zm-14-18h2v18h-2V181Zm-1,18h-4V180h-3v-2h3v-3h3.981l0,3H474v2h-3.015Zm-5,0h-2V181h2v18Z" transform="translate(-464 -113)"/>
+    <path id="限" class="cls-4" d="M515,199h-4l-2-8v-2h6v2h-2Zm-7-2v2h-4V175h11v13h-7v9Zm5-20h-5v3h5v-3Zm0,9v-4h-5v4h5Zm-16,13h-4V175h10v20h-6v4Zm4-22h-4v7h4v-7Zm0,16v-7h-4v7h4Z" transform="translate(-464 -113)"/>
+    <path id="中" class="cls-4" d="M535,195v4h-4v-4h-9V178h9v-3h4v3h9v17h-9Zm-9-15v13h5V180h-5Zm14,0h-5v13h5V180Z" transform="translate(-464 -113)"/>
+    <path id="心" class="cls-4" d="M571,197V175h2v22h-2Zm-16,2h-1V175h4v22h8v-4h4v6H555Zm4-24h2v14h-2V175Zm-8,0h2v22h-2V175Z" transform="translate(-464 -113)"/>
+  </g>
+</svg>
