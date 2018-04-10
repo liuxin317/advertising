@@ -1,5 +1,7 @@
 import { message } from 'antd';
-import Store from '../index';
+import { Store } from '../index';
+import serverGoBackInfo from '../configure/serverGoBackInfo';
+import { getCookie } from '../components/common/methods';
 
 // 格式化请求参数
 function formatParam(param = {}) {
@@ -30,6 +32,9 @@ function httpRequest (url, method, params, successBack, errorBack = null) {
     Store.dispatch({ type: "app/save", payload: { loadState: true } });
     
     let newOptions = {};
+    if (url.indexOf('login') === -1) {
+        params.token = JSON.parse(getCookie('userInfo')).token;
+    }
 
     if (method === 'GET') { // 区分请求方式传参方式不一样
         if (JSON.stringify(params) !== "{}") {
@@ -46,7 +51,7 @@ function httpRequest (url, method, params, successBack, errorBack = null) {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         mode: "no-cors", // 允许跨域
-        credentials: 'include', // 自动发送本地cookies
+        // credentials: 'include', // 自动发送本地cookies
         ...newOptions
     })
     .then(response => {
@@ -66,7 +71,21 @@ function httpRequest (url, method, params, successBack, errorBack = null) {
         } else if (String(data.code) === "403") {
             message.error('禁止访问');
         } else if (String(data.code) === "501") { // 参数错误
-            
+            let messages = [];
+
+            data.info.forEach(item => {
+                for (let key in serverGoBackInfo) {
+                    if (String(item) === String(key)) {
+                        messages.push(serverGoBackInfo[key])
+                    }
+                }
+            })
+
+            if (!messages.length) {
+                message.warning("参数错误");
+            } else {
+                message.warning(messages.join(','));
+            }
         }
     })
     .catch(error => {

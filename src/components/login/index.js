@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
 import HttpRequest from '../../utils/fetch';
 import { Redirect } from 'react-router-dom';
+import { setCookie } from '../common/methods';
 import "./style.scss";
 
 const FormItem = Form.Item;
@@ -130,11 +131,13 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { account, password } = values;
-        HttpRequest("/login", "GET", {
+        HttpRequest("/auth/login", "GET", {
           username: account,
           password: password
         }, res => {
           message.success("登陆成功！");
+          setCookie("userInfo", JSON.stringify(res.data)); // 存取用户信息
+          this.setState({ isLogin: true }); // 跳转页面
         })
       }
     });

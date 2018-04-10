@@ -1,16 +1,3 @@
-import HttpRequest from '../../utils/fetch';
-
-/**
- * 异步发起action公共方法
- * @param {*} params 传的参数
- * @param {*} type 
- */
-const fetchFriends = (params, type) => dispatch => {
-  HttpRequest(params, (res) => {
-    dispatch({ type, payload: res })
-  })
-}
-
 // 获取cookie
 function getCookie(name)
 {
@@ -56,4 +43,4 @@ function getURLValue (name) {
     return value;
 }
 
-export { getCookie, setCookie, removeCookie, getURLValue, fetchFriends };
+export { getCookie, setCookie, removeCookie, getURLValue };

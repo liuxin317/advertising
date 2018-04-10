@@ -1,7 +1,7 @@
 import 'es6-shim';
 
 import dva from 'dva';
-import { browserHistory } from 'dva/router'
+import { browserHistory } from 'dva/router';
 import createLoading from 'dva-loading';
 import './index.scss';
 
@@ -25,4 +25,6 @@ app.router(require('./router').default);
 // 5. Start
 app.start('#root');
 
-export default app._store;
+const Store = app._store;
+
+export {app, Store};

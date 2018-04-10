@@ -1,0 +1,43 @@
+.launch-box {
+  flex: 5;
+  padding: 20px;
+  background-color: white;
+  box-shadow: -1px 0px 1px rgba(0,0,0,.05);
+  
+  .launch-top-button {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .operation-row {
+    margin-top: 10px;
+    padding: 10px 0 5px;
+    border-bottom: #eee solid 1px;
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .table-box {
+    h5 {
+      position: relative;
+      margin-bottom: 20px;
+      padding-left: 10px;
+      font-size: 14px;
+      line-height: 20px;
+      vertical-align: middle;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 20px;
+        width: 4px;
+        background-color: #999;
+      }
+    }
+  }
+}
