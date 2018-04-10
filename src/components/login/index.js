@@ -15,8 +15,8 @@ var WINDOW_HEIGHT = document.body.offsetHeight;
 var canvas,context;
 var num = 500;
 var stars = [];
-var mouseX = WINDOW_WIDTH/2;
-var mouseY = WINDOW_HEIGHT/2;
+// var mouseX = WINDOW_WIDTH/2;
+// var mouseY = WINDOW_HEIGHT/2;
 var rnd;
 
 function liuxing(){
@@ -29,8 +29,8 @@ function liuxing(){
 
 function mouseMove(e){
   //因为是整屏背景，这里不做坐标转换
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+  // mouseX = e.clientX;
+  // mouseY = e.clientY;
 }
 
 function render(){
