@@ -59,7 +59,17 @@ class TimeSelected extends Component {
       key: '7',
       name: '星期日',
       ...times
-    }]
+    }],
+    startMoveOver: false, // 启动时间节点点移动事件
+    moveOne: true, // 在时间节点内启动一次移动事件内部只做一次操作
+  }
+
+  componentDidMount () {
+    
+    document.querySelector('.time-selected').onmousemove = function (event) {
+      event.preventDefault();
+      window.event.returnValue = false;
+    }
   }
 
   // 时间段选中状态(0 => 0-30， 1 => 30-1)(time => 时间段)(record => 改rowDate)
@@ -153,29 +163,72 @@ class TimeSelected extends Component {
     })
   }
 
-  //画区间
-  onmousedown = (record, e) => {
-    console.log(record);
+  // 时间段区间鼠标按下事件
+  onmousedownTimeSlot = () => {
+    this.setState({
+      startMoveOver: true
+    })
+  }
+
+  // 时间段区间鼠标松开事件
+  onmouseupTimeSlot = () => {
+    this.setState({
+      startMoveOver: false
+    })
+  }
+
+  // 时间段区间鼠标移动事件(record => 该节点数据)(state => 前半段or后半段)(time => 该时间节点)
+  onmousemoveTimeSlot = (record, state, time, e) => {
+    e.preventDefault();
+    
+    const { timeData, moveOne } = this.state;
+
+    if (moveOne) {
+      let timeDatas = JSON.parse(JSON.stringify(timeData));
+
+      timeDatas.forEach(item => {
+        if (item.key === record.key) {
+          item[time][state] = !item[time][state]; // 改变当前选中状态
+        }
+      })
+
+      this.setState({
+        timeData: timeDatas,
+        moveOne: false
+      })
+    }
+  }
+
+  // 时间段区离开事件
+  onmouseoutTimeSlot = () => {
+    this.setState({
+      moveOne: true
+    })
   }
 
   // 表格每列render
   tableCloumnRender = (tiems, text, record) => {
+    const { startMoveOver } = this.state;
+
     return (
       <div className="time-group">
-        {
-          record[tiems][0] 
-          ? 
-          <span className="active" onClick={ this.periodTimeChooseState.bind(this, 0, tiems, record) }></span>
-          :
-          <span onClick={ this.periodTimeChooseState.bind(this, 0, tiems, record) }></span>
-        }
-        {
-          record[tiems][1] 
-          ? 
-          <span className="active" onClick={ this.periodTimeChooseState.bind(this, 1, tiems, record) }></span>
-          :
-          <span onClick={ this.periodTimeChooseState.bind(this, 1, tiems, record) }></span>
-        }
+        <span 
+          className={ record[tiems][0] ? "active" : "" } 
+          onClick={ this.periodTimeChooseState.bind(this, 0, tiems, record) } 
+          onMouseDown={ this.onmousedownTimeSlot } 
+          onMouseUp={ this.onmouseupTimeSlot } 
+          onMouseOut={ this.onmouseoutTimeSlot }
+          onMouseMove={ startMoveOver ? this.onmousemoveTimeSlot.bind(this, record, 0, tiems) : null }>
+        </span>
+
+        <span 
+          className={ record[tiems][1] ? "active" : "" } 
+          onClick={ this.periodTimeChooseState.bind(this, 1, tiems, record) } 
+          onMouseDown={ this.onmousedownTimeSlot }  
+          onMouseUp={ this.onmouseupTimeSlot } 
+          onMouseOut={ this.onmouseoutTimeSlot }
+          onMouseMove={ startMoveOver ? this.onmousemoveTimeSlot.bind(this, record, 1, tiems) : null }>
+        </span>
       </div>
     )
   }

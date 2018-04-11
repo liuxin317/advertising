@@ -20,7 +20,7 @@ class CreatePlan extends Component {
   }
 
   componentDidMount () {
-    this.getPutChannels()
+    // this.getPutChannels()
   }
 
   // 监听设置广告计划
