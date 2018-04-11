@@ -65,7 +65,6 @@ class TimeSelected extends Component {
   }
 
   componentDidMount () {
-    
     document.querySelector('.time-selected').onmousemove = function (event) {
       event.preventDefault();
       window.event.returnValue = false;
