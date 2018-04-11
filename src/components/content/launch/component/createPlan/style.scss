@@ -1,0 +1,47 @@
+.create-plan {
+  margin-left: 20px;
+
+  .create-group {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 30px;
+
+    .name {
+      flex: 1;
+      line-height: 36px;
+      text-align: right;
+      align-self: flex-start;
+
+      .ant-select-selection--single {
+        height: 36px;
+        padding-top: 2px;
+      }
+    }
+
+    .input-group {
+      flex: 5;
+      margin-left: 10px;
+
+      input.ant-input {
+        width: 60%;
+        height: 36px;
+      }
+
+      span.ant-input {
+        height: 36px;
+      }
+
+      .channel-type {
+        display: flex;
+        align-items: center;
+        width: 60%;
+        height: 40px;
+        border-bottom: #eee solid 1px;
+      }
+
+      .channel-group {
+        margin-top: 10px;
+      }
+    }
+  }
+}

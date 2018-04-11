@@ -40,4 +40,15 @@
       }
     }
   }
+
+  .launch-tabs {
+    .ant-tabs-tab {
+      font-size: 16px;
+      color: #333;
+
+      &.ant-tabs-tab-active {
+        color: #1890ff !important;
+      }
+    }
+  }
 }

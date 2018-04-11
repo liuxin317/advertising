@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Tabs, Select, Table, Modal, message } from 'antd';
 import HttpRequest from '../../../utils/fetch';
+// 新建广告计划
+import CreatePlan from './component/createPlan';
 import './style.scss';
 
 const TabPane = Tabs.TabPane;
@@ -20,7 +22,7 @@ const columns = [{
 class Launch extends Component {
   state = {
     pageNum: 1,
-    pageSize: 2,
+    pageSize: 10,
     channelId: '', // 查询媒体ID
     userId: '', // 广告主id
     channels: [], // 媒体下拉列表
@@ -29,10 +31,12 @@ class Launch extends Component {
     total: '', // 总共的数据条数
     planIds: '', // 广告计划列表批量删除id集合
     visibleRemove: false, // 删除确认框
+    selectedRowKeys: [], // Check here to configure the default column
+    isCreate: true, // 是否为创建状态
   }
 
   componentDidMount () {
-    this.getAnnelList()
+    // this.getAnnelList()
   }
 
   // tab切换回调
@@ -119,6 +123,7 @@ class Launch extends Component {
     })
 
     this.setState({
+      selectedRowKeys,
       planIds: planIds.join(',')
     })
   }
@@ -132,7 +137,8 @@ class Launch extends Component {
     }, res => {
       message.success("删除成功！");
       this.setState({
-        visibleRemove: false
+        visibleRemove: false,
+        selectedRowKeys: []
       }, () => {
         this.getPlanList()
       })
@@ -149,7 +155,6 @@ class Launch extends Component {
   // 开启批量删除确认框
   showBatchDeleteModal = () => {
     const { planIds, visibleRemove } = this.state;
-    console.log(planIds);
     if (!planIds) {
       message.warning('请选择删除数据！')
     } else {
@@ -169,9 +174,16 @@ class Launch extends Component {
     }
   }
 
+  // 切换创建状态
+  switchCreateStatus = () => {
+    this.setState({
+      isCreate: true
+    })
+  }
+
   render () {
 
-    const {channels, users, planList, pageNum, pageSize, total} = this.state;
+    const {channels, users, planList, pageNum, pageSize, total, selectedRowKeys, isCreate} = this.state;
 
     // 批量表格
     const rowSelection = {
@@ -181,6 +193,7 @@ class Launch extends Component {
         disabled: record.name === 'Disabled User', // Column configuration not to be checked
         name: record.name,
       }),
+      selectedRowKeys
     };
 
     return (
@@ -188,60 +201,68 @@ class Launch extends Component {
         <div className="content-top">
           <h4>投放管理</h4>
           <div className="launch-top-button">
-            <Button type="primary">创建新广告</Button>
+            <Button type="primary" onClick={ this.switchCreateStatus }>创建新广告</Button>
           </div>
         </div>
 
         <div className="launch-tabs">
           <Tabs defaultActiveKey="1" onChange={this.TabCallback}>
             <TabPane tab="广告计划" key="1">
-              <div className="sreach-row">
-                <Select
-                  showSearch
-                  style={{ width: 200 }}
-                  placeholder="广告主"
-                  optionFilterProp="children"
-                  onChange={this.handleChangeUser}
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                  {
-                    users.map((item, index) => {
-                      return <Option key={ index } value={ item.id }>{ item.userName }</Option>
-                    })
-                  }
-                </Select>
+              {
+                isCreate
+                ?
+                <CreatePlan />
+                :
+                <div className="plan-examine">
+                  <div className="sreach-row">
+                    <Select
+                      showSearch
+                      style={{ width: 200 }}
+                      placeholder="广告主"
+                      optionFilterProp="children"
+                      onChange={this.handleChangeUser}
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {
+                        users.map((item, index) => {
+                          return <Option key={ index } value={ item.id }>{ item.userName }</Option>
+                        })
+                      }
+                    </Select>
 
-                <Select
-                  showSearch
-                  style={{ width: 200, marginLeft: 20 }}
-                  placeholder="媒体渠道"
-                  optionFilterProp="children"
-                  onChange={this.handleChangeChannel}
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                  {
-                    channels.map((item, index) => {
-                      return <Option key={ index } value={ item.id }>{ item.name }</Option>
-                    })
-                  }
-                </Select>
-              </div>
+                    <Select
+                      showSearch
+                      style={{ width: 200, marginLeft: 20 }}
+                      placeholder="媒体渠道"
+                      optionFilterProp="children"
+                      onChange={this.handleChangeChannel}
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {
+                        channels.map((item, index) => {
+                          return <Option key={ index } value={ item.id }>{ item.name }</Option>
+                        })
+                      }
+                    </Select>
+                  </div>
 
-              <div className="operation-row">
-                <a onClick={ this.showBatchDeleteModal }>批量删除</a>
-              </div>
+                  <div className="operation-row">
+                    <a onClick={ this.showBatchDeleteModal }>批量删除</a>
+                  </div>
 
-              <div className="table-box">
-                <h5>详细数据</h5>
+                  <div className="table-box">
+                    <h5>详细数据</h5>
 
-                <Table 
-                  rowKey={(record, index) => index}
-                  rowSelection={rowSelection} 
-                  columns={columns} 
-                  dataSource={planList} 
-                  pagination={{ showQuickJumper: true, total, current: pageNum, pageSize, onChange: this.onChangePage, showTotal: total => `共 ${total} 条`}}
-                />
-              </div>
+                    <Table 
+                      rowKey={(record, index) => index}
+                      rowSelection={rowSelection} 
+                      columns={columns} 
+                      dataSource={planList} 
+                      pagination={{ showQuickJumper: true, total, current: pageNum, pageSize, onChange: this.onChangePage, showTotal: total => `共 ${total} 条`}}
+                    />
+                  </div>
+                </div>
+              }
             </TabPane>
             <TabPane tab="广告组" key="2">Content of Tab Pane 2</TabPane>
             <TabPane tab="广告" key="3">Content of Tab Pane 3</TabPane>
