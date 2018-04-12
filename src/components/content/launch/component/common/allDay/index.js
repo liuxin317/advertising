@@ -138,7 +138,7 @@ class AllDay extends Component {
             }
           </div>
 
-          <div className="group" style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: 20 }}>
+          <div className="group" style={{ display: 'flex' }}>
             <Button type="primary" style={{ backgroundColor: '#f5222d' }} onClick={ this.undoAllOptions }>撤销所有选择</Button>
           </div>
         </div>

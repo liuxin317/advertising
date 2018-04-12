@@ -11,9 +11,16 @@ const Dashboard = dynamic({
   component: () => import('./dashboard')
 })
 
+// 投放管理
 const Launch = dynamic({
   app,
   component: () => import('./launch')
+})
+
+// 素材管理
+const Material = dynamic({
+  app, 
+  component: () => import('./material')
 })
 
 class Content extends Component {
@@ -34,6 +41,7 @@ class Content extends Component {
           }
           <Route path={`${ match.path }/dashboard`} component={ Dashboard } />
           <Route path={`${ match.path }/launch`} component={ Launch } />
+          <Route path={`${ match.path }/material`} component={ Material } />
         </div>
       </section>
     )
