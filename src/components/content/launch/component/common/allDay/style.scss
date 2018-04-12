@@ -1,9 +1,12 @@
-.time-selected {
-  width: 1060px;
-
+.all-time-selected {
+  width: 150px;
 
   .no-hover:hover td{
     background: none;
+  }
+
+  .ant-table-thead > tr > th {
+
   }
 
   .ant-table-tbody > tr > td {
@@ -14,22 +17,13 @@
       display: flex;
       width: 40px;
       height: 45px;
+      margin: 0 auto;
 
       span {
         flex: 1;
-        cursor: pointer;
-
-        &:first-of-type {
-          border-right: #f5f5f5 solid 1px;
-        }
-
-        &:hover {
-          background-color: #e6f7ff;
-        }
-
-        &.active {
-          background-color: #bce6fa;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }

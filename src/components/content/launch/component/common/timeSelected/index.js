@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import './style.scss';
 
 const times = {
@@ -62,10 +62,13 @@ class TimeSelected extends Component {
     }],
     startMoveOver: false, // 启动时间节点点移动事件
     moveOne: true, // 在时间节点内启动一次移动事件内部只做一次操作
+    timeGroupSelect: [], // 选中的时间区间
   }
 
   componentDidMount () {
-    document.querySelector('.time-selected').onmousemove = function (event) {
+    var timeSelected = document.querySelector('.time-selected');
+
+    timeSelected.onmousemove = function (event) { // 禁止默认行为
       event.preventDefault();
       window.event.returnValue = false;
     }
@@ -159,13 +162,15 @@ class TimeSelected extends Component {
 
     this.setState({
       timeData: timeDatas
+    }, () => {
+      this.getSelectTimeInterval()
     })
   }
 
   // 时间段区间鼠标按下事件
   onmousedownTimeSlot = () => {
     this.setState({
-      startMoveOver: true
+      startMoveOver: false
     })
   }
 
@@ -232,8 +237,208 @@ class TimeSelected extends Component {
     )
   }
 
-  render () {
+  // 获取已选中的时间段
+  getSelectTimeInterval = () => {
     const { timeData } = this.state;
+    let selectTimeData = [];
+
+    // 获取选中的数据
+    timeData.forEach((item) => {  
+      let obj = {};
+      let interCol = []; // 区间收集
+
+      for (let val in item) {
+        if (val.indexOf('time') > -1) {
+          let data = item[val];
+          let stop = true; // 判断区间收集叫停
+
+          data.forEach((d, index) => {
+            let obj2 = {};
+
+            if (d) {
+              stop = true;
+              obj2.sunday = item.name; // 当前周天
+              obj2.time = Number(val.split('time')[1]); // 当前时间
+              obj2.state = index; // 当前点区间（0-30； 30-60）
+            } else {
+              stop = false;
+            }
+
+            if (stop) {
+              interCol.push(obj2)
+            }
+          })
+        }
+      }
+
+      if (interCol.length) {
+        obj.interCol = interCol
+        selectTimeData.push(obj)
+      }
+    })
+
+    // 得到的数据处理成为区间数组
+    selectTimeData.forEach(item => { 
+      let intervalArray = []; // 区间数组
+      let section = []; // 区段
+      let len = item.interCol.length;
+
+      item.interCol.forEach((d, index) => { // 每级数据
+        if (index !== 0) {
+          if ((d.time - 1) === item.interCol[(index - 1)].time) { // 判断是否连续
+            if (item.interCol[(index - 1)].state === 0 && d.state === 0 || item.interCol[(index - 1)].state === 0 && d.state === 1 || item.interCol[(index - 1)].state === 1 && d.state === 1) { // 连续中也存在不连续 
+              let arry = [];
+
+              if (section.length >= 2) {
+                arry.push(section[0])
+                arry.push(section[section.length - 1])
+              } else {
+                arry.push(section[0])
+              }
+
+              intervalArray.push(arry)
+              section = []
+              section.push(d)
+
+              if ((len - 1) === index) { // 判断是否为最后一个
+                intervalArray.push(section)
+              }
+            } else { // 连续
+              section.push(d)
+
+              let arry = [];
+
+              if (section.length >= 2) {
+                arry.push(section[0])
+                arry.push(section[section.length - 1])
+              } else {
+                arry.push(section[0])
+              }
+
+              if ((len - 1) === index) { // 判断是否为最后一个
+                intervalArray.push(arry)
+              }
+            }
+          } if (d.time === item.interCol[(index - 1)].time) { // 连续
+            section.push(d)
+
+            let arry = [];
+
+            if (section.length >= 2) {
+              arry.push(section[0])
+              arry.push(section[section.length - 1])
+            } else {
+              arry.push(section[0])
+            }
+
+            if ((len - 1) === index) { // 判断是否为最后一个
+              intervalArray.push(arry)
+            }
+          } else if ((d.time - 1) !== item.interCol[(index - 1)].time) { // 不连续
+            let arry = [];
+
+            if (section.length >= 2) {
+              arry.push(section[0])
+              arry.push(section[section.length - 1])
+            } else {
+              arry.push(section[0])
+            }
+
+            intervalArray.push(arry)
+            section = []
+            section.push(d)
+
+            if ((len - 1) === index) { // 判断是否为最后一个
+              intervalArray.push(section)
+            }
+          }
+
+        } else { // 第一个数据
+          section.push(d);
+
+          if (len === 1) { 
+            intervalArray.push(d)
+          }
+        }
+      })
+      
+      item.intervalArray = intervalArray;
+    })
+
+    let timeGroupSelect = [];
+
+    // 将得到的数据转换成文字区间
+    selectTimeData.forEach(item => {
+      let intervalArray = item.intervalArray;
+      let intervalVlaue = item.interCol[0].sunday + '：';
+      let section = [];
+      
+      intervalArray.forEach(d => {
+        let afterInterval = '';
+
+        if (d.length === 2) {
+          d.forEach((row, index) => {
+            let time = String(row.time).length === 1 ? '0' + row.time : row.time;
+            let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
+
+            if (index === 0) {
+              afterInterval += row.state === 0 ? time + ':00' : time + ':30';
+            } else {
+              afterInterval += row.state === 0 ? '~' + time + ':30' : '~' + nextTime + ':00';
+            }
+          })
+        } else {
+          if (intervalArray.length === 1) {
+            let time = String(d.time).length === 1 ? '0' + d.time : d.time;
+            let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
+
+            afterInterval = d.state === 0 ? time + ':00 ~ ' + time + ':30' : time + ':30 ~ ' + nextTime + ':00';
+          } else {
+            let time = String(d[0].time).length === 1 ? '0' + d[0].time : d[0].time;
+            let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
+
+            afterInterval = d[0].state === 0 ? time + ':00 ~ ' + time + ':30' : time + ':30 ~ ' + nextTime + ':00';
+          }
+        }
+
+        section.push(afterInterval)
+      })
+
+      intervalVlaue += section.join('，');
+      timeGroupSelect.push(intervalVlaue)
+    })
+
+    this.setState({
+      timeGroupSelect
+    });
+
+    this.props.childrenGetTimeSelectedData(timeGroupSelect);
+  }
+
+  // 撤销所有的选择
+  undoAllOptions = () => {
+    const { timeData } = this.state;
+    let timeDatas = JSON.parse(JSON.stringify(timeData));
+
+    timeDatas.forEach(item => {
+      for (let val in item) {
+        if (val.indexOf('time') > -1) {
+          item[val][0] = false
+          item[val][1] = false
+        }
+      }
+    })
+
+    this.setState({
+      timeData: timeDatas,
+      timeGroupSelect: []
+    }, () => {
+      this.props.childrenGetTimeSelectedData(this.state.timeGroupSelect);
+    })
+  }
+
+  render () {
+    const { timeData, timeGroupSelect } = this.state;
     const columns = [{
       title: '星期 / 日期',
       dataIndex: 'name',
@@ -244,73 +449,73 @@ class TimeSelected extends Component {
       children: [
         {
           title: '0',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time0',
           render: this.tableCloumnRender.bind(this, "time0")
         },
         {
           title: '1',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time1',
           render: this.tableCloumnRender.bind(this, "time1")
         },
         {
           title: '2',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time2',
           render: this.tableCloumnRender.bind(this, "time2")
         },
         {
           title: '3',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time3',
           render: this.tableCloumnRender.bind(this, "time3")
         },
         {
           title: '4',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time4',
           render: this.tableCloumnRender.bind(this, "time4")
         },
         {
           title: '5',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time5',
           render: this.tableCloumnRender.bind(this, "time5")
         },
         {
           title: '6',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time6',
           render: this.tableCloumnRender.bind(this, "time6")
         },
         {
           title: '7',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time7',
           render: this.tableCloumnRender.bind(this, "time7")
         },
         {
           title: '8',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time8',
           render: this.tableCloumnRender.bind(this, "time8")
         },
         {
           title: '9',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time9',
           render: this.tableCloumnRender.bind(this, "time9")
         },
         {
           title: '10',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time10',
           render: this.tableCloumnRender.bind(this, "time10")
         },
         {
           title: '11',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time11',
           render: this.tableCloumnRender.bind(this, "time11")
         }
@@ -321,7 +526,7 @@ class TimeSelected extends Component {
       children: [
         {
           title: '12',
-          width: '50px',
+          width: '40px',
           dataIndex: 'time12',
           render: this.tableCloumnRender.bind(this, "time12")
         },
@@ -404,6 +609,20 @@ class TimeSelected extends Component {
           pagination={false} 
           rowClassName="no-hover" 
         />
+
+        <div className="time-selected">
+          <div className="group">
+            {
+              timeGroupSelect.map((item,index) => {
+                return <p key={ index }>{ item }</p>
+              })
+            }
+          </div>
+
+          <div className="group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button type="primary" style={{ backgroundColor: '#f5222d' }} onClick={ this.undoAllOptions }>撤销所有选择</Button>
+          </div>
+        </div>
       </section>
     )
   }

@@ -4,7 +4,7 @@
   .create-group {
     display: flex;
     align-items: center;
-    margin: 20px 0 30px;
+    margin: 20px 0;
 
     .name {
       flex: 1;
@@ -41,6 +41,20 @@
 
       .channel-group {
         margin-top: 10px;
+      }
+
+      .period-group {
+        margin-top: 20px;
+      }
+
+      .period-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .launch-type {
+        border-bottom: none;
       }
     }
   }
