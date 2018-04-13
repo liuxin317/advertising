@@ -1,0 +1,53 @@
+.create-material {
+  margin-top: 20px;
+  
+  .info-group {
+    display: flex;
+    margin-bottom: 15px;
+
+    .name {
+      flex: 1;
+      text-align: right;
+      line-height: 32px;
+      color: #333;
+
+      em {
+        font-style: normal;
+        color: red;
+      }
+    }
+
+    .info-content {
+      flex: 9;
+
+      input.ant-input {
+        width: 40%;
+      }
+    }
+
+    .avatar-uploader > .ant-upload {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 128px;
+      height: 128px;
+      border: 1px dashed #d9d9d9;
+      background-color: #fafafa;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        border-color: #1890ff;
+      }
+
+      .ant-upload {
+        text-align: center;
+      }
+
+      .anticon-plus {
+        font-size: 32px;
+        color: #999;
+      }
+    }
+  }
+}

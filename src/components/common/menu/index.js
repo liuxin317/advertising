@@ -45,13 +45,13 @@ class MenuBar extends Component {
         >
           <Menu.Item key="1"><Icon type="area-chart" /> <span>Dashboard</span></Menu.Item>
           <Menu.Item key="2"><Icon type="shop" /> <span>投放管理</span></Menu.Item>
+          <Menu.Item key="7"><Icon type="trademark" /> <span>素材管理</span></Menu.Item>
           <SubMenu key="sub2" title={<span><Icon type="credit-card" /><span>报表管理</span></span>}>
             <Menu.Item key="3">实时报表</Menu.Item>
             <Menu.Item key="4">基础报表</Menu.Item>
           </SubMenu>
           <Menu.Item key="5"><Icon type="video-camera" /> <span>广告主管理</span></Menu.Item>
           <Menu.Item key="6"><Icon type="pay-circle-o" /> <span>财务管理</span></Menu.Item>
-          <Menu.Item key="7"><Icon type="trademark" /> <span>广告位管理</span></Menu.Item>
           <Menu.Item key="8"><Icon type="user" /> <span>管理员</span></Menu.Item>
         </Menu>
       </nav>

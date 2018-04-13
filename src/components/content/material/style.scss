@@ -1,6 +1,29 @@
 .material-box {
-    flex: 5;
-    padding: 20px;
-    background-color: white;
-    box-shadow: -1px 0px 1px rgba(0,0,0,.05);
+    
+    .table-box {
+        h5 {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            font-size: 14px;
+            line-height: 20px;
+            vertical-align: middle;
+
+            &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 20px;
+            width: 4px;
+            background-color: #999;
+            }
+        }
+    }
+}
+
+.modal-box {
+    .tabs-content {
+        margin-top: 10px;
+    }
 }

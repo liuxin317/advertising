@@ -105,6 +105,7 @@ class CreatePlan extends Component {
 
   render () {
     const { channelsType, plainOptions, modeTime, periodType, launchType } = this.state;
+    const { backListView } = this.props;
 
     return (
       <section className="create-plan">
@@ -253,7 +254,7 @@ class CreatePlan extends Component {
           <div className="name"></div>
           <div className="input-group">
             <Button type="primary">确定并新建广告组</Button>
-            <Button style={{ marginLeft: 30 }}>取消</Button>
+            <Button style={{ marginLeft: 30 }} onClick={ backListView }>取消</Button>
           </div>
         </div>
       </section>

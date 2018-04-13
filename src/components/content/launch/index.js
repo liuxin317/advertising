@@ -32,11 +32,11 @@ class Launch extends Component {
     planIds: '', // 广告计划列表批量删除id集合
     visibleRemove: false, // 删除确认框
     selectedRowKeys: [], // Check here to configure the default column
-    isCreate: true, // 是否为创建状态
+    isCreate: false, // 是否为创建状态
   }
 
   componentDidMount () {
-    // this.getAnnelList()
+    this.getAnnelList()
   }
 
   // tab切换回调
@@ -181,6 +181,13 @@ class Launch extends Component {
     })
   }
 
+  // 返回列表视图
+  backListView = () =>{
+    this.setState({
+      isCreate: false
+    })
+  }
+
   render () {
 
     const {channels, users, planList, pageNum, pageSize, total, selectedRowKeys, isCreate} = this.state;
@@ -197,7 +204,7 @@ class Launch extends Component {
     };
 
     return (
-      <section className="launch-box">
+      <section className="content-box launch-box">
         <div className="content-top">
           <h4>投放管理</h4>
           <div className="launch-top-button">
@@ -211,7 +218,7 @@ class Launch extends Component {
               {
                 isCreate
                 ?
-                <CreatePlan />
+                <CreatePlan backListView={ this.backListView } />
                 :
                 <div className="plan-examine">
                   <div className="sreach-row">
