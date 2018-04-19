@@ -170,7 +170,7 @@ class TimeSelected extends Component {
   // 时间段区间鼠标按下事件
   onmousedownTimeSlot = () => {
     this.setState({
-      startMoveOver: false
+      startMoveOver: true
     })
   }
 
@@ -199,6 +199,8 @@ class TimeSelected extends Component {
       this.setState({
         timeData: timeDatas,
         moveOne: false
+      }, () => {
+        this.getSelectTimeInterval()
       })
     }
   }
@@ -218,7 +220,7 @@ class TimeSelected extends Component {
       <div className="time-group">
         <span 
           className={ record[tiems][0] ? "active" : "" } 
-          onClick={ this.periodTimeChooseState.bind(this, 0, tiems, record) } 
+          onClick={ startMoveOver ? null : this.periodTimeChooseState.bind(this, 0, tiems, record) } 
           onMouseDown={ this.onmousedownTimeSlot } 
           onMouseUp={ this.onmouseupTimeSlot } 
           onMouseOut={ this.onmouseoutTimeSlot }
@@ -227,7 +229,7 @@ class TimeSelected extends Component {
 
         <span 
           className={ record[tiems][1] ? "active" : "" } 
-          onClick={ this.periodTimeChooseState.bind(this, 1, tiems, record) } 
+          onClick={ startMoveOver ? null : this.periodTimeChooseState.bind(this, 1, tiems, record) } 
           onMouseDown={ this.onmousedownTimeSlot }  
           onMouseUp={ this.onmouseupTimeSlot } 
           onMouseOut={ this.onmouseoutTimeSlot }

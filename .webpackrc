@@ -16,5 +16,8 @@
       "secure": false
     }
   },
-  "disableCSSModules": true
+  "disableCSSModules": true,
+  "alias": {
+    "utils": "../../utils"
+  }    
 }
