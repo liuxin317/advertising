@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button, message } from 'antd';
 import HttpRequest from 'utils/fetch';
 import { Redirect } from 'react-router-dom';
 import { setCookie } from '../common/methods';
+import logo from '../../imgs/logo.png';
 import "./style.scss";
 
 const FormItem = Form.Item;
@@ -160,7 +161,8 @@ class Login extends Component {
         <div className="login-content">
           <div className="login-input-box">
             <figure className="login-title">
-              <figcaption>广告投放系统</figcaption>
+              {/* <figcaption>广告投放系统</figcaption> */}
+              <img src={ logo } alt="广告投放系统"/>
             </figure>
 
             <div className="border-top"></div>

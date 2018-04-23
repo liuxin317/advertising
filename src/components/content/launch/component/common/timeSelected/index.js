@@ -381,25 +381,25 @@ class TimeSelected extends Component {
         if (d.length === 2) {
           d.forEach((row, index) => {
             let time = String(row.time).length === 1 ? '0' + row.time : row.time;
-            let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
+            // let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
 
             if (index === 0) {
               afterInterval += row.state === 0 ? time + ':00' : time + ':30';
             } else {
-              afterInterval += row.state === 0 ? '~' + time + ':30' : '~' + nextTime + ':00';
+              afterInterval += row.state === 0 ? '~' + time + ':30' : '~' + time + ':59';
             }
           })
         } else {
           if (intervalArray.length === 1) {
             let time = String(d.time).length === 1 ? '0' + d.time : d.time;
-            let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
+            // let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
 
-            afterInterval = d.state === 0 ? time + ':00 ~ ' + time + ':30' : time + ':30 ~ ' + nextTime + ':00';
+            afterInterval = d.state === 0 ? time + ':00 ~ ' + time + ':30' : time + ':30 ~ ' + time + ':59';
           } else {
             let time = String(d[0].time).length === 1 ? '0' + d[0].time : d[0].time;
-            let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
+            // let nextTime = String((Number(time) + 1)).length === 1 ? '0' + (Number(time) + 1) : (Number(time) + 1);
 
-            afterInterval = d[0].state === 0 ? time + ':00 ~ ' + time + ':30' : time + ':30 ~ ' + nextTime + ':00';
+            afterInterval = d[0].state === 0 ? time + ':00 ~ ' + time + ':30' : time + ':30 ~ ' + time + ':59';
           }
         }
 

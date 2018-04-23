@@ -26,7 +26,7 @@ export default {
     }
   },
 
-  reducers: {// 同步处理
+  reducers: {// 修改store
     save (state, action) {
       return { ...state, ...action.payload };
     }

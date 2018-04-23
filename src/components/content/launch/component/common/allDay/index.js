@@ -93,7 +93,7 @@ class AllDay extends Component {
       let str = '';
 
       if (item.selected) {
-        str = `${item.name}：00:00 ~ 24:00`
+        str = `${item.name}：00:00 ~ 23:59`
       }
 
       timeGroupSelect.push(str)

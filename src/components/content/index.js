@@ -6,6 +6,7 @@ import Head from '../common/header';
 import Menu from '../common/menu';
 import './style.scss';
 
+// Dashboard
 const Dashboard = dynamic({
   app,
   component: () => import('./dashboard')
@@ -35,7 +36,7 @@ class Content extends Component {
           {
             location.pathname === match.path
             ?
-            <Redirect push to="/content/dashboard" />
+            <Redirect push to="/content/launch" />
             :
             ''
           }
