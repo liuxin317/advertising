@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Tabs, Select, Table, Modal, message } from 'antd';
+import { Button, Tabs, Select, Table, Modal, message, Input, Icon } from 'antd';
 import HttpRequest from '../../../utils/fetch';
-// 新建广告计划
-import CreatePlan from './component/createPlan';
 import './style.scss';
 
 const TabPane = Tabs.TabPane;
@@ -15,28 +13,64 @@ const columns = [{
   title: '计划ID',
   dataIndex: 'id',
 }, {
+  title: '展示',
+  dataIndex: 'channelId',
+}, {
+  title: '点击',
+  dataIndex: 'moneyType',
+}, {
+  title: '点击率',
+  dataIndex: 'putType',
+}, {
+  title: 'CPC',
+  dataIndex: 'userId',
+}, {
+  title: 'CPM',
+  dataIndex: 'money1',
+}, {
   title: '花费',
+  dataIndex: 'money2',
+}, {
+  title: '操作',
+  render: (text, record) => {
+    return (
+      <div className="operation-group">
+        <Icon type="play-circle" />
+      </div>
+    )
+  }
+}, {
+  title: '状态',
   dataIndex: 'money',
+}, {
+  title: '每日预算',
+  dataIndex: 'money4',
 }];
 
 class Launch extends Component {
   state = {
     pageNum: 1,
     pageSize: 10,
-    channelId: '', // 查询媒体ID
-    userId: '', // 广告主id
-    channels: [], // 媒体下拉列表
-    users: [], // 广告主下拉列表
+    putInStatus: [{
+      name: '投放中',
+      id: 1
+    },{
+      name: '暂停中',
+      id: 2
+    },{
+      name: '已删除',
+      id: 3
+    }],
+    putID: '', // 投放状态ID
     planList: [], // 广告计划列表数据
     total: '', // 总共的数据条数
-    planIds: '', // 广告计划列表批量删除id集合
+    batchIds: '', // 批量id集合
     visibleRemove: false, // 删除确认框
-    selectedRowKeys: [], // Check here to configure the default column
-    isCreate: false, // 是否为创建状态
+    selectedRowKeys: [], // 批量选择集合
   }
 
   componentDidMount () {
-    this.getAnnelList()
+    this.getPlanList()
   }
 
   // tab切换回调
@@ -45,59 +79,19 @@ class Launch extends Component {
   }
 
   // 监听广告计划用户下拉
-  handleChangeUser = (value) => {
+  handleChangeStatus = (value) => {
     this.setState({
-      userId: value,
-      pageNum: 1
-    }, () => {
-      this.getPlanList()
-    })
-  }
-
-  // 监听媒体下拉
-  handleChangeChannel = (value) => {
-    this.setState({
-      channelId: value,
-      pageNum: 1
-    }, () => {
-      this.getPlanList()
-    })
-  }
-
-  // 获取广告计划搜索下拉
-  getAnnelList = () => {
-    HttpRequest("/plan/channelList", "POST", {}, res => {
-      let allChannel = {
-        name: "全部",
-        id: ""
-      };
-
-      let allUser = {
-        userName: "全部",
-        id: ""
-      };
-
-      res.data.channels.unshift(allChannel);
-      res.data.users.unshift(allUser);
-      
-      this.setState({
-        channels: res.data.channels,
-        users: res.data.users
-      })
-
-      this.getPlanList()
+      putID: value
     })
   }
 
   // 获取广告计划列表
   getPlanList = () => {
-    const { pageNum, pageSize, channelId, userId } = this.state;
+    const { pageNum, pageSize } = this.state;
 
     HttpRequest("/plan/planList", "POST", {
       pageNum,
-      pageSize,
-      channelId,
-      userId
+      pageSize
     }, res => {
       this.setState({
         planList: res.data.ls,
@@ -115,25 +109,25 @@ class Launch extends Component {
     })
   }
 
-  // 获取批量删除ids
+  // 获取批量ids
   getBatchDeleteIds = (selectedRowKeys, selectedRows) => {
-    let planIds = [];
+    let batchIds = [];
     selectedRows.forEach(item => {
-      planIds.push(item.id)
+      batchIds.push(item.id)
     })
 
     this.setState({
       selectedRowKeys,
-      planIds: planIds.join(',')
+      batchIds: batchIds.join(',')
     })
   }
 
   // 确定删除确定框,广告计划批量删除
   okModalRemove = () => {
-    const { planIds } = this.state;
+    const { batchIds } = this.state;
     
     HttpRequest("/plan/delPlans", "POST", {
-      ids: planIds
+      ids: batchIds
     }, res => {
       message.success("删除成功！");
       this.setState({
@@ -190,7 +184,7 @@ class Launch extends Component {
 
   render () {
 
-    const {channels, users, planList, pageNum, pageSize, total, selectedRowKeys, isCreate} = this.state;
+    const {putInStatus, planList, pageNum, pageSize, total, selectedRowKeys} = this.state;
 
     // 批量表格
     const rowSelection = {
@@ -215,64 +209,51 @@ class Launch extends Component {
         <div className="launch-tabs">
           <Tabs defaultActiveKey="1" onChange={this.TabCallback}>
             <TabPane tab="广告计划" key="1">
-              {
-                isCreate
-                ?
-                <CreatePlan backListView={ this.backListView } />
-                :
-                <div className="plan-examine">
-                  <div className="sreach-row">
-                    <Select
-                      showSearch
-                      style={{ width: 200 }}
-                      placeholder="广告主"
-                      optionFilterProp="children"
-                      onChange={this.handleChangeUser}
-                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    >
-                      {
-                        users.map((item, index) => {
-                          return <Option key={ index } value={ item.id }>{ item.userName }</Option>
-                        })
-                      }
-                    </Select>
+              {/* <CreatePlan backListView={ this.backListView } /> */}
+              <div className="plan-examine">
+                <div className="operation-row">
+                  <a onClick={ this.showBatchDeleteModal }>批量开启投放</a>
+                  <a onClick={ this.showBatchDeleteModal }>批量暂停投放</a>
+                  <a onClick={ this.showBatchDeleteModal }>批量删除</a>
+                </div>
 
-                    <Select
-                      showSearch
-                      style={{ width: 200, marginLeft: 20 }}
-                      placeholder="媒体渠道"
-                      optionFilterProp="children"
-                      onChange={this.handleChangeChannel}
-                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    >
-                      {
-                        channels.map((item, index) => {
-                          return <Option key={ index } value={ item.id }>{ item.name }</Option>
-                        })
-                      }
-                    </Select>
-                  </div>
-
-                  <div className="operation-row">
-                    <a onClick={ this.showBatchDeleteModal }>批量删除</a>
-                  </div>
-
-                  <div className="table-box">
+                <div className="table-box">
+                  <div className="table-top">
                     <h5>详细数据</h5>
 
-                    <Table 
-                      rowKey={(record, index) => index}
-                      rowSelection={rowSelection} 
-                      columns={columns} 
-                      dataSource={planList} 
-                      pagination={{ showQuickJumper: true, total, current: pageNum, pageSize, onChange: this.onChangePage, showTotal: total => `共 ${total} 条`}}
-                    />
+                    <div className="search-condition">
+                      <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="投放状态"
+                        optionFilterProp="children"
+                        onChange={this.handleChangeStatus}
+                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      >
+                        {
+                          putInStatus.map((item, index) => {
+                            return <Option key={ index } value={ item.id }>{ item.name }</Option>
+                          })
+                        }
+                      </Select>
+
+                      <Input style={{ width: 200, margin: "0 15px" }} placeholder="广告计划名称或ID" onChange={ null } />
+
+                      <Button className="search-button" type="primary" shape="circle" icon="search" onClick={ null } />
+                    </div>
                   </div>
+
+                  <Table 
+                    rowKey={(record, index) => index}
+                    rowSelection={rowSelection} 
+                    columns={columns} 
+                    dataSource={planList} 
+                    pagination={{ showQuickJumper: true, total, current: pageNum, pageSize, onChange: this.onChangePage, showTotal: total => `共 ${total} 条`}}
+                  />
                 </div>
-              }
+              </div>
             </TabPane>
-            <TabPane tab="广告组" key="2">Content of Tab Pane 2</TabPane>
-            <TabPane tab="广告" key="3">Content of Tab Pane 3</TabPane>
+            <TabPane tab="广告" key="2">Content of Tab Pane 3</TabPane>
           </Tabs>
         </div>
       </section>

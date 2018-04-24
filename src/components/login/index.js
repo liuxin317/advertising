@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
-import HttpRequest from 'utils/fetch';
+import HttpRequest from '@/utils/fetch';
 import { Redirect } from 'react-router-dom';
 import { setCookie } from '../common/methods';
 import logo from '../../imgs/logo.png';

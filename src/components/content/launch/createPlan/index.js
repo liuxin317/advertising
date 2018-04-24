@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Input, Select, Radio, Checkbox, DatePicker, Button } from 'antd';
-import HttpRequest from '../../../../../utils/fetch';
+import HttpRequest from '@/utils/fetch';
 // 时间段选择组件
-import TimeSelected from '../common/timeSelected';
+import TimeSelected from '../component/common/timeSelected';
 // 全天选择组件
-import AllDay from '../common/allDay';
+import AllDay from '../component/common/allDay';
 import './style.scss';
+import { Store } from '@/index';
+
+// 广告计划
+import ChoosePlan from './component/choosePlan';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -24,7 +28,19 @@ class CreatePlan extends Component {
   }
 
   componentDidMount () {
+    Store.dispatch({
+      type: 'app/save',
+      payload: { leftMenuStatus: 2 }
+    })
+
     this.getPutChannels()
+  }
+
+  componentWillUnmount () {
+    Store.dispatch({
+      type: 'app/save',
+      payload: { leftMenuStatus: 1 }
+    })
   }
 
   // 监听设置广告计划
@@ -105,10 +121,12 @@ class CreatePlan extends Component {
 
   render () {
     const { channelsType, plainOptions, modeTime, periodType, launchType } = this.state;
-    const { backListView } = this.props;
 
     return (
-      <section className="create-plan">
+      <section className="content-box create-plan">
+        {/* 广告计划 */}
+        <ChoosePlan />
+
         {/* 广告计划名称 */}
         <div className="create-group">
           <label className="name" htmlFor="name">广告计划名称：</label>
@@ -254,7 +272,7 @@ class CreatePlan extends Component {
           <div className="name"></div>
           <div className="input-group">
             <Button type="primary">确定并新建广告组</Button>
-            <Button style={{ marginLeft: 30 }} onClick={ backListView }>取消</Button>
+            <Button style={{ marginLeft: 30 }}>取消</Button>
           </div>
         </div>
       </section>

@@ -1,4 +1,6 @@
-{
+var path = require('path');
+
+export default {
   "proxy": {
     "/plan": {
       "target": "http://192.168.10.23:8080",
@@ -18,6 +20,6 @@
   },
   "disableCSSModules": true,
   "alias": {
-    "utils": "../../utils"
+    "@": path.resolve(__dirname, './src')
   }    
 }

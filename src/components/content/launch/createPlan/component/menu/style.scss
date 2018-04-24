@@ -1,0 +1,16 @@
+.menu-plan-box {
+  margin-right: 20px;
+
+  &.active {
+    flex: 1;
+  }
+
+  ul.ant-menu-root {
+    padding: 10px 0 200px;
+    background-color: white;
+  }
+
+  .ant-menu-item-group-title {
+    font-size: 14px;
+  }
+}

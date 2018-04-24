@@ -58,4 +58,17 @@
       }
     }
   }
+
+  .create-plan-group {
+    padding-left: 50px;
+
+    .ant-tabs-content {
+      padding: 20px 0 10px;
+    }
+
+    .next-step {
+      width: 100px;
+      margin-top: 20px;
+    }
+  }
 }
