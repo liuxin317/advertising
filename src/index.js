@@ -1,5 +1,5 @@
 import 'es6-shim';
-
+import 'fetch-ie8';
 import dva from 'dva';
 import { browserHistory } from 'dva/router';
 import createLoading from 'dva-loading';
