@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Input, Select, Radio, Checkbox, DatePicker, Button } from 'antd';
-import HttpRequest from '@/utils/fetch';
+import HttpRequest from '../../../../utils/fetch.js';
 // 时间段选择组件
-import TimeSelected from '../component/common/timeSelected';
+import TimeSelected from '../component/common/timeSelected/index.js';
 // 全天选择组件
-import AllDay from '../component/common/allDay';
+import AllDay from '../component/common/allDay/index.js';
 import './style.scss';
-import { Store } from '@/index';
+import { Store } from '../../../../index.js';
 
 // 广告计划
-import ChoosePlan from './component/choosePlan';
+import AdvertProgram from './component/advertProgram.js';
+// 广告板块
+import Advertising from './component/advertising.js';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -33,7 +35,19 @@ class CreatePlan extends Component {
       payload: { leftMenuStatus: 2 }
     })
 
-    this.getPutChannels()
+    // this.getPutChannels()
+
+    // 监听竖向滚动条
+    window.onscroll = function (e) {
+      var e = e || window.event;
+      var scrolltop = document.documentElement.scrollTop||document.body.scrollTop;
+      
+      if (scrolltop >= 60) {
+        document.querySelector('.menu-plan-box').style.top = 0;
+      } else {
+        document.querySelector('.menu-plan-box').style.top = (60 - scrolltop) + 'px';
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -112,31 +126,19 @@ class CreatePlan extends Component {
     })
   }
 
-  // 投放类型选择
-  onChangeLaunchType = (e) => {
-    this.setState({
-      launchType: e.target.value
-    })
-  }
-
   render () {
     const { channelsType, plainOptions, modeTime, periodType, launchType } = this.state;
 
     return (
       <section className="content-box create-plan">
         {/* 广告计划 */}
-        <ChoosePlan />
+        <AdvertProgram />
 
-        {/* 广告计划名称 */}
-        <div className="create-group">
-          <label className="name" htmlFor="name">广告计划名称：</label>
-          <div className="input-group">
-            <Input placeholder="请输入名称" />
-          </div>
-        </div>
+        {/* 广告板块 */}
+        <Advertising />
 
         {/* 预算 */}
-        <div className="create-group">
+        {/* <div className="create-group">
           <div className="name">
             <Select defaultValue="1" style={{ width: 158, height: 36 }} onChange={this.setPlanHandleChange}>
               <Option value="1">广告计划总预算</Option>
@@ -146,41 +148,18 @@ class CreatePlan extends Component {
           <div className="input-group">
             <Input placeholder="请输入预算" />
           </div>
-        </div>
-
-        {/* 投放渠道 */}
-        <div className="create-group">
-          <label className="name" htmlFor="name">投放渠道：</label>
-          <div className="input-group">
-            <div className="channel-type">
-              <RadioGroup onChange={this.onChangeChannelType} value={channelsType}>
-                <Radio value={1}>PC</Radio>
-                <Radio value={2}>MOB</Radio>
-              </RadioGroup>
-            </div>
-
-            <div className="channel-group">
-              <CheckboxGroup onChange={this.onChangeChannels}>
-                {
-                  plainOptions.map((item, index) => {
-                    return <Checkbox key={ index } value={ item.id }>{ item.name }</Checkbox>
-                  })
-                }
-              </CheckboxGroup>
-            </div>
-          </div>
-        </div>
+        </div> */}
         
         {/* 投放日期 */}
-        <div className="create-group">
+        {/* <div className="create-group">
           <label className="name" htmlFor="name">投放日期：</label>
           <div className="input-group">
             <RangePicker onChange={this.onChangeDate} disabledDate={this.disabledDate} />
           </div>
-        </div>
+        </div> */}
         
         {/* 投放时间 */}
-        <div className="create-group">
+        {/* <div className="create-group">
           <label className="name" htmlFor="name">投放时间：</label>
           <div className="input-group">
             <Radio.Group onChange={this.handleModeChange} value={modeTime} style={{ marginBottom: 8 }}>
@@ -188,10 +167,10 @@ class CreatePlan extends Component {
               <Radio.Button value="time">按时间段投放</Radio.Button>
             </Radio.Group>
           </div>
-        </div>
+        </div> */}
   
         {/* 时间对应的tabs */}
-        <div className="create-group">
+        {/* <div className="create-group">
           <div className="name"></div>
           <div className="input-group">
             {
@@ -202,10 +181,10 @@ class CreatePlan extends Component {
               <TimeSelected childrenGetTimeSelectedData={ this.childrenGetTimeSelectedData } />
             }
           </div>
-        </div>
+        </div> */}
         
         {/* 频次控制 */}
-        <div className="create-group">
+        {/* <div className="create-group">
           <label className="name" htmlFor="name">频次控制：</label>
           <div className="input-group">
             <div className="channel-type">
@@ -252,29 +231,16 @@ class CreatePlan extends Component {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* 投放控制 */}
-        <div className="create-group">
-          <label className="name" htmlFor="name">投放控制：</label>
-          <div className="input-group">
-            <div className="channel-type launch-type">
-              <RadioGroup onChange={this.onChangeLaunchType} value={launchType}>
-                <Radio value={1}>均匀投放</Radio>
-                <Radio value={2}>加速投放</Radio>
-              </RadioGroup>
-            </div>
-          </div>
-        </div>
+        </div> */}
 
         {/* 确定 or 取消 */}
-        <div className="create-group">
+        {/* <div className="create-group">
           <div className="name"></div>
           <div className="input-group">
             <Button type="primary">确定并新建广告组</Button>
             <Button style={{ marginLeft: 30 }}>取消</Button>
           </div>
-        </div>
+        </div> */}
       </section>
     )
   }

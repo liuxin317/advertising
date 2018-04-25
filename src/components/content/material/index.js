@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Table, Modal, Radio, Select, Input, message } from 'antd';
-import HttpRequest from '../../../utils/fetch';
+import HttpRequest from '../../../utils/fetch.js';
 // 新建素材视图
-import CreateMaterial from './component/createMaterial';
+import CreateMaterial from './component/createMaterial/index.js';
 import './style.scss';
 
 const RadioGroup = Radio.Group;

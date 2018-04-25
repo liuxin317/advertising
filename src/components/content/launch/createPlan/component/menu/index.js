@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from 'antd';
 import './style.scss';
-import { Store } from '@/index';
+import { Store } from '../../../../../../index.js';
 
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -38,10 +38,9 @@ class MenuBar extends Component {
       <nav className={ this.state.collapsed ? "menu-plan-box" : "menu-plan-box active" }>
         <Menu
           onClick={this.handleClick}
-          style={{ width: 256 }}
           defaultSelectedKeys={['1']}
           mode="inline"
-          selectable={ false }
+          inlineCollapsed={this.state.collapsed}
         >
           <MenuItemGroup key="g1" title="广告计划">
             <Menu.Item key="1">选择计划</Menu.Item>

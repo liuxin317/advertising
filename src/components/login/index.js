@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
-import HttpRequest from '@/utils/fetch';
+import HttpRequest from '../../utils/fetch.js';
 import { Redirect } from 'react-router-dom';
-import { setCookie } from '../common/methods';
+import { setCookie } from '../common/methods.js';
 import logo from '../../imgs/logo.png';
 import "./style.scss";
 

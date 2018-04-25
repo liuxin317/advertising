@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import './style.scss';
-import { Store } from '@/index';
+import { Store } from '../../../index.js';
 
 const SubMenu = Menu.SubMenu;
 

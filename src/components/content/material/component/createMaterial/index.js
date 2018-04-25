@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import HttpRequest from '../../../../../utils/fetch';
+import HttpRequest from '../../../../../utils/fetch.js';
 import { Input, Select, Upload, message, Button, Icon } from 'antd';
 import './style.scss';
 

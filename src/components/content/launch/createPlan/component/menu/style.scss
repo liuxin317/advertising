@@ -1,8 +1,11 @@
 .menu-plan-box {
+  position: fixed;
+  top: 60px;
+  left: 0;
   margin-right: 20px;
 
   &.active {
-    flex: 1;
+    width: 256px;
   }
 
   ul.ant-menu-root {
